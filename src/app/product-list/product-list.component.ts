@@ -1,12 +1,11 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../product.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 
-interface Producto{
-  id: number,
-  name: string,
+interface Product {
+  id: number;
+  name: string;
   price: number;
 }
 
@@ -19,23 +18,21 @@ interface Producto{
   styleUrl: './product-list.component.css'
 })
 
-export class ProductListComponent{
+export class ProductListComponent {
+  
+deleteProduct(arg0: number) {
+throw new Error('Method not implemented.');
+}
 
-  constructor(private productService: ProductService, private router: Router) { }
+editProduct(arg0: number) {
+throw new Error('Method not implemented.');
+}
+  products: Product[] = [];
 
-  deleteProduct(arg0: number){
-    throw new Error('Metodo no implementado');
-  }
-
-  editProduct(id: number){
-    this.router.navigate(['/product-edit', id]);
-  }
-
-  products: Producto[] = [];
-
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((data:Producto[]) => {
+    this.productService.getProducts().subscribe((data: Product[]) => {
       this.products = data;
     });
   }

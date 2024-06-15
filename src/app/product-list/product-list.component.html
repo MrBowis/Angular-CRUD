@@ -1,8 +1,17 @@
-<h2>Productos</h2>
-<ul>
-  <li *ngFor="let product of products">
-    {{ product.id }} - {{ product.name }} - {{ product.price }}
-    <button (click)="editProduct(product.id)">EDITAR</button>
-    <button (click)="deleteProduct(product.id)">ELIMINAR</button>
-  </li>
-</ul>
+<div class="all">
+  <h2>Productos</h2>
+
+  <div class="firstRow">
+    <h2>ID</h2>
+    <h2>Nombre</h2>
+    <h2>Precio</h2>
+    <h2 class="firstRow__acciones">Acciones</h2>
+  </div>
+  <div class="product" *ngFor="let product of products">
+    <p>{{ product.id }}</p>
+    <p>{{ product.name }}</p>
+    <p>{{ product.price }}</p>
+    <button (click)="editProduct(product.id)">Editar</button>
+    <button (click)="deleteProduct(product.id)">Eliminar</button>
+  </div>
+</div>

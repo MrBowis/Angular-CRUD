@@ -2,23 +2,13 @@
   "products": [
     {
       "id": "1",
-      "name": "hola",
+      "name": "producto 1",
       "price": 12.2
     },
     {
       "id": "2",
       "name": "producto 2",
       "price": "12.3"
-    },
-    {
-      "id": 3,
-      "name": "producto 3",
-      "price": "12.2"
-    },
-    {
-      "id": 4,
-      "name": "producto 4",
-      "price": "10.1"
     }
   ]
 }
