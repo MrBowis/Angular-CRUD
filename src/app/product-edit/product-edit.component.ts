@@ -1,42 +1,56 @@
 import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ProductService } from '../product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
-
+import Producto from '../product.interface';
 @Component({
   selector: 'app-product-edit',
   standalone: true,
   providers: [ProductService],
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.css'
 })
 export class ProductEditComponent {
 
-  product: Product = { id: 0, name: '', price: 0 };
+  product: Producto = {
+    id: '',
+    name: '',
+    price: 0
+  }
 
   constructor(
     private productService: ProductService,
-    @Inject(ActivatedRoute) private route: ActivatedRoute,
-    @Inject(Router) private router: Router
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getProduct(id).subscribe((data: Product) => {
-      this.product = data;
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id !== null) {
+      this.productService.getProduct(id).subscribe(
+        (data: Producto) => {
+          this.product = data;
+        },
+        error => {
+          console.error('Error fetching product:', error);
+          this.router.navigate(['/']);
+        }
+      );
+    } else {
+      console.error('Invalid product ID');
+      this.router.navigate(['/']);
+    }
   }
 
   updateProduct(): void {
-    this.productService.updateProduct(this.product).subscribe(() => {
-      this.router.navigate(['/']);
-    });
+    if (this.product) {
+      this.productService.updateProduct(this.product).subscribe(() => {
+        this.router.navigate(['/']);
+      });
+    } else {
+      console.error('Product is undefined');
+    }
   }
 }

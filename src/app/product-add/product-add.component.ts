@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-interface Producto{
-  id: number,
-  name: string,
-  price: number,
-}
-
+import Producto from '../product.interface';
 @Component({
   selector: 'app-product-add',
   standalone: true,
@@ -17,8 +11,9 @@ interface Producto{
   styleUrl: './product-add.component.css'
 })
 export class ProductAddComponent {
+
   product: Producto = {
-    id: 0,
+    id: '',
     name: '',
     price: 0
   };
@@ -26,11 +21,15 @@ export class ProductAddComponent {
   constructor(private productService: ProductService, private router: Router){}
 
   addProduct(): void {
-    this.productService.getMaxId().subscribe(maxId => {
-      this.product.id = maxId + 1;
+    this.productService.getProducts().subscribe((data: Producto[]) => {
+      const lastId = data.length > 0 ? data[data.length - 1].id : '0';
+      this.product.id = (parseInt(lastId) + 1).toString();
+
       this.productService.addProduct(this.product).subscribe(() => {
         this.router.navigate(['/']);
       });
+    }, error => {
+      console.error('Error fetching products:', error);
     });
   }
 

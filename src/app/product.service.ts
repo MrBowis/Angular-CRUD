@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-interface Producto{
-  id: number,
-  name: string,
-  price: number;
-}
+import Producto from './product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +18,7 @@ export class ProductService {
     return this.http.get<Producto[]>(this.apiURL);
   }
 
-  getProduct(id: number): Observable<Producto>{
+  getProduct(id: string): Observable<Producto>{
     return this.http.get<Producto>(`${this.apiURL}/${id}`);
   }
 
@@ -35,14 +30,7 @@ export class ProductService {
     return this.http.put<Producto>(`${this.apiURL}/${producto.id}`, producto);
   }
 
-  deleteProduct(id: number): Observable<void>{
+  deleteProduct(id: string): Observable<void>{
     return this.http.delete<void>(`${this.apiURL}/${id}`);
   }
-
-  getMaxId(): Observable<number> {
-    return this.getProducts().pipe(
-      map(products => products.length > 0 ? Math.max(...products.map(product => product.id)) : 0)
-    );
-  }
-
 }
